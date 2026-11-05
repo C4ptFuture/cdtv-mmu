@@ -3,14 +3,8 @@
 This repo contains the source code to the CDTV MMU cache inhibit resident module that is part of the CDTV OS 2.36 update.
 
 ## Background
-This resident module is to be included with CDTV OS ROM builds to support CDTV players with a 68030 installed. It disables CPU caching on startup which is known to cause data corruption when reading the CDTV OS ROM addresses on Viper 530 (F00000-F7FFFF). It also prevents caching of the DMAC's and TriPort chip's I/O lines, which the 68030 will happily do unless instructed otherwise. 
+This resident module configures CPU caches at startup for CDTV players upgraded with a 68020, 68030, 68040 or 68060, protecting the CDTV OS ROM and the DMAC and TriPort I/O registers from inappropriate caching.
 
-Note: This module on its own is not enough to fix CD-ROM drive issues with 68030 systems! The cdtv.device driver requires fixing as well in the way it talks to the DMAC. This fix is implemented in my custom CDTV OS ROM v 2.35, but as this is closed source, I am sadly not able to publish the source code.
+On a 68020 it clears and disables the instruction cache; on a 68030, 68040 or 68060 it uses transparent translation registers to inhibit caching across the entire 24-bit address range ($000000–$FFFFFF), leaving 32-bit Fast RAM outside that range cacheable. No MMU tables are needed, and tools such as mmu.library can provide finer control after boot. 
 
-## How to build
-
-You need vasm and the Amiga NDK. To build the resident module issue the following command:
-
-```sh
-ENVIRONMENT=release make mmu    
-```
+This module alone does not resolve CD-ROM drive issues with accelerators: it also requires the cdtv.device fixes included in CDTV OS 2.35 and 2.36. Written in 68k assembly by CDTV Land. The source is released under GPLv3.
