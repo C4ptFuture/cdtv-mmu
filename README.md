@@ -1,6 +1,6 @@
 # CDTV MMU Cache Inhibit
 
-This repo contains the source code to the CDTV MMU cache inhibit resident module that is part of the CDTV OS 2.35 update.
+This repo contains the source code to the CDTV MMU cache inhibit resident module that is part of the CDTV OS 2.36 update.
 
 ## Background
 This resident module is to be included with CDTV OS ROM builds to support CDTV players with a 68030 installed. It disables CPU caching on startup which is known to cause data corruption when reading the CDTV OS ROM addresses on Viper 530 (F00000-F7FFFF). It also prevents caching of the DMAC's and TriPort chip's I/O lines, which the 68030 will happily do unless instructed otherwise. 
